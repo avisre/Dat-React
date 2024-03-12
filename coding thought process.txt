@@ -1,0 +1,5 @@
+Leetcode 20/2/24
+
+Fizz buzz:
+no divisbile by 3,5 and 3 and 5 use standard if else satetement used array empty to store data and return statement after loop to show results.
+Note: use :?modern js to improve efficiency.
