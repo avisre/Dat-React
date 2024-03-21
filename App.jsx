@@ -1,52 +1,46 @@
-import { useState,useEffect } from 'react'
-
-import './App.css'
-import{User} from './user'
+import React, { useState, useEffect } from 'react';
+import './App.css';
 import axios from 'axios';
 
 function App() {
-const[list,setList]=useState([]);
-const[da,Setda]=useState('');
+  const [list, setList] = useState([]);
+  const [ticker, setTicker] = useState('');
+  const [price, setPrice] = useState('');
 
-
-  const add=()=>{
-  
-  axios.get(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${da}&apikey=TQMYPOEMECCN7R7F`)
-  .then(res => {
-    console.log(res.data["Global Quote"]["05. price"]); // Access res.data instead of res.json()
-    const newList=[...list,da];
-    setList(newList);
-  })
-  .catch(error => {
-    console.error('Error fetching data:', error);
-  });
-
-  }
-  useEffect(() => {
-  
-  }, []);
-
-  const data=(e)=>{
-    Setda(e.target.value);
+  const add = () => {
+    axios.get(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${ticker}&apikey=6VWT72JNHHLBF3MH`)
+      .then(res => {
+        const newPrice = res.data["Global Quote"]["05. price"];
+        setPrice(newPrice);
+        const newItem = { ticker: ticker, price: newPrice };
+        const newList = [...list, newItem];
+        setList(newList);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
   }
 
-   return(
+  const handleTickerChange = (e) => {
+    setTicker(e.target.value);
+  }
+
+  return (
     <>
       <div className='App'>
-     <input onChange={data} name="myInput" />
-
-       
-<button onClick={add}>Click me!</button>
+        <input onChange={handleTickerChange} name="myInput" />
+        <button onClick={add}>Click me!</button>
       </div>
 
       <div>
-{list.map((items,key)=>{
-  return <p key={items}>{items}</p>
-})}
+        {list.map((item, key) => {
+          return (
+            <p key={key}>{item.ticker}: {item.price}</p>
+          );
+        })}
       </div>
-      </>
- 
+    </>
   );
 }
 
-export default App
+export default App;
